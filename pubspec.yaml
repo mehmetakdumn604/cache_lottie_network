@@ -1,10 +1,10 @@
 name: cache_lottie_network
-description: A new Flutter package project.
+description: Cache Lottie Network Projects.
 version: 0.0.1
-homepage:
+homepage: https://github.com/DandyCreater/cache_lottie_network.git
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
@@ -14,7 +14,6 @@ dependencies:
     sdk: flutter
   flutter_secure_storage: ^6.0.0
   lottie: ^1.4.3
-  skeleton: ^0.9.284
   skeletons: ^0.0.3
 
 dev_dependencies:
