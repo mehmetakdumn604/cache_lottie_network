@@ -33,6 +33,7 @@ class _LottieCacheState extends State<CacheLottieNetwork> {
   final Connectivity _connectivity = Connectivity();
 
   Dio dio = Dio();
+
   var storage = const FlutterSecureStorage();
   String? cacheUrl = "";
   LottieComposition? _composition;
@@ -66,6 +67,13 @@ class _LottieCacheState extends State<CacheLottieNetwork> {
     if (_connectionStatus == ConnectivityResult.wifi ||
         _connectionStatus == ConnectivityResult.mobile) {
       try {
+        if (dio == null) {
+          BaseOptions options = BaseOptions(
+            connectTimeout: 5000,
+            receiveTimeout: 5000,
+          );
+          dio = Dio(options);
+        }
         var response;
         var assetData = await dio.get(widget.lottieUrl!);
         response = assetData.data;
