@@ -1,6 +1,6 @@
 name: cache_lottie_network
 description: Cache Lottie Network Projects.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/DandyCreater/cache_lottie_network.git
 
 environment:
