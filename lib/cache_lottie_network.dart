@@ -1,154 +1,59 @@
 library cache_lottie_network;
 
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:cache_lottie_network/mixins/cache_lottie_mixin.dart';
+import 'package:flutter/material.dart';
 
 import 'package:lottie/lottie.dart';
 
 class CacheLottieNetwork extends StatefulWidget {
   final String? lottieUrl;
-  final Widget function;
-  final String? keys;
+  final Widget? onEmptyWidget;
+  final String? cacheKey;
+  final double? width;
+  final double? height;
+  final BoxFit? fit;
+  final Alignment? alignment;
+  final bool? animate;
+  final bool? repeat;
+  final bool? reverse;
+  final FilterQuality? filterQuality;
+  final RenderCache? renderCache;
 
-  const CacheLottieNetwork(
-      {super.key,
-      required this.lottieUrl,
-      required this.function,
-      required this.keys});
+  const CacheLottieNetwork({
+    super.key,
+    required this.lottieUrl,
+    this.onEmptyWidget,
+    required this.cacheKey,
+    this.width,
+    this.height,
+    this.fit,
+    this.alignment,
+    this.animate,
+    this.repeat,
+    this.reverse,
+    this.filterQuality,
+    this.renderCache,
+  });
 
   @override
   State<CacheLottieNetwork> createState() => _LottieCacheState();
 }
 
-class _LottieCacheState extends State<CacheLottieNetwork> {
-  late ConnectivityResult connection;
-  ConnectivityResult _connectionStatus = ConnectivityResult.none;
-  final Connectivity _connectivity = Connectivity();
-
-  Dio dio = Dio();
-
-  var storage = const FlutterSecureStorage();
-  String? cacheUrl = "";
-  LottieComposition? _composition;
-  late ConnectivityResult result;
-
-  doFunction() async {
-    _loadComposition().then((value) {
-      setState(() {});
-    });
-  }
-
-  //load secureStorage Read
-  Future _loadComposition() async {
-    var storagedata = await storage.read(
-      key: widget.keys!,
-      aOptions: const AndroidOptions(
-        encryptedSharedPreferences: true,
-      ),
-    );
-
-    //connection
-    try {
-      connection = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      debugPrint("No Internet Connection : $e");
-    }
-
-    _connectionStatus = connection;
-
-    //Connection Success
-    if (_connectionStatus == ConnectivityResult.wifi ||
-        _connectionStatus == ConnectivityResult.mobile) {
-      try {
-        if (dio == null) {
-          BaseOptions options = BaseOptions(
-            connectTimeout: 5000,
-            receiveTimeout: 5000,
-          );
-          dio = Dio(options);
-        }
-        var response;
-        var assetData = await dio.get(widget.lottieUrl!);
-        response = assetData.data;
-        var finaldata = jsonEncode(response);
-
-        final List<int> codeUnits = finaldata.codeUnits;
-        final Uint8List unit8List = Uint8List.fromList(codeUnits);
-        final byteData = ByteData.view(unit8List.buffer);
-
-        var composition = await LottieComposition.fromByteData(byteData);
-
-        _composition = composition;
-        await storage.write(key: widget.keys!, value: finaldata);
-
-        return _composition;
-      } on DioError catch (e) {
-        //Connection success but didnt have response
-        if (e.type == DioErrorType.connectTimeout) {
-          if (storagedata != null) {
-            final List<int> codeUnits = storagedata.codeUnits;
-            final Uint8List unit8List = Uint8List.fromList(codeUnits);
-            final byteData = ByteData.view(unit8List.buffer);
-
-            var composition = await LottieComposition.fromByteData(byteData);
-            _composition = composition;
-            return _composition;
-          }
-          //if storage Data null
-          else {
-            return widget.function;
-          }
-        }
-      }
-    }
-    //Didnt connect to internet
-    else {
-      final List<int> codeUnits = storagedata!.codeUnits;
-      final Uint8List unit8List = Uint8List.fromList(codeUnits);
-      final byteData = ByteData.view(unit8List.buffer);
-
-      try {
-        var composition = await LottieComposition.fromByteData(byteData);
-        _composition = composition;
-
-        return _composition;
-      } catch (e) {
-        debugPrint("Error Cache Json $e");
-      }
-    }
-  }
-
-  //read Secure Storage
-  Future readCache() async {
-    await storage
-        .read(
-            aOptions: const AndroidOptions(
-              encryptedSharedPreferences: true,
-            ),
-            key: widget.keys!)
-        .then((value) => cacheUrl = value);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    // _loadComposition();
-    doFunction();
-    readCache();
-    super.initState();
-  }
-
+class _LottieCacheState extends State<CacheLottieNetwork>
+    with CacheLottieMixin {
   @override
   Widget build(BuildContext context) {
     return Lottie(
-      composition: _composition,
+      composition: composition,
+      width: widget.width,
+      height: widget.height,
+      fit: widget.fit,
+      alignment: widget.alignment,
+      animate: widget.animate,
+      repeat: widget.repeat,
+      reverse: widget.reverse,
+      filterQuality: widget.filterQuality,
+      renderCache: widget.renderCache,
     );
   }
 }
