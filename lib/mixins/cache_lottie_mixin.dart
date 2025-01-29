@@ -32,13 +32,15 @@ mixin CacheLottieMixin on State<CacheLottieNetwork> {
   //load secureStorage Read
   Future _loadComposition() async {
     try {
+
       // First check cache
-      final cachedData = await storage.read(
+     
+      final cachedData = widget.cacheKey != null ? await storage.read(
         key: widget.cacheKey!,
         aOptions: const AndroidOptions(
           encryptedSharedPreferences: true,
         ),
-      );
+      ) : null;
 
       // If we have cached data, use it
       if (cachedData != null) {
