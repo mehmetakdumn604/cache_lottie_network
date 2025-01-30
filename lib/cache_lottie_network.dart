@@ -1,11 +1,11 @@
-library cache_lottie_network;
+library cached_lottie_network;
 
-import 'package:cache_lottie_network/mixins/cache_lottie_mixin.dart';
+import 'package:cached_lottie_network/mixins/cache_lottie_mixin.dart';
 import 'package:flutter/material.dart';
 
 import 'package:lottie/lottie.dart';
 
-class CacheLottieNetwork extends StatefulWidget {
+class CachedLottieNetwork extends StatefulWidget {
   final String? lottieUrl;
   final Widget? onEmptyWidget;
   final String? cacheKey;
@@ -19,7 +19,7 @@ class CacheLottieNetwork extends StatefulWidget {
   final FilterQuality? filterQuality;
   final RenderCache? renderCache;
 
-  const CacheLottieNetwork({
+  const CachedLottieNetwork({
     super.key,
     required this.lottieUrl,
     this.onEmptyWidget,
@@ -36,10 +36,10 @@ class CacheLottieNetwork extends StatefulWidget {
   });
 
   @override
-  State<CacheLottieNetwork> createState() => _LottieCacheState();
+  State<CachedLottieNetwork> createState() => _LottieCacheState();
 }
 
-class _LottieCacheState extends State<CacheLottieNetwork>
+class _LottieCacheState extends State<CachedLottieNetwork>
     with CacheLottieMixin {
   @override
   Widget build(BuildContext context) {

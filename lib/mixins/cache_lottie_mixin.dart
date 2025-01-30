@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cache_lottie_network/cache_lottie_network.dart';
+import 'package:cached_lottie_network/cache_lottie_network.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lottie/lottie.dart';
 
-mixin CacheLottieMixin on State<CacheLottieNetwork> {
+mixin CacheLottieMixin on State<CachedLottieNetwork> {
   late ConnectivityResult connection;
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
@@ -32,15 +32,16 @@ mixin CacheLottieMixin on State<CacheLottieNetwork> {
   //load secureStorage Read
   Future _loadComposition() async {
     try {
-
       // First check cache
-     
-      final cachedData = widget.cacheKey != null ? await storage.read(
-        key: widget.cacheKey!,
-        aOptions: const AndroidOptions(
-          encryptedSharedPreferences: true,
-        ),
-      ) : null;
+
+      final cachedData = widget.cacheKey != null
+          ? await storage.read(
+              key: widget.cacheKey!,
+              aOptions: const AndroidOptions(
+                encryptedSharedPreferences: true,
+              ),
+            )
+          : null;
 
       // If we have cached data, use it
       if (cachedData != null) {

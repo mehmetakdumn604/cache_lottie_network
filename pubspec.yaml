@@ -1,7 +1,8 @@
-name: cache_lottie_network
-description: Cache Lottie Network Projects.
+name: cached_lottie_network
+description: A Flutter package for caching and displaying Lottie animations from network URLs with offline support and secure local storage.
 version: 0.0.2
-homepage: https://github.com/DandyCreater/cache_lottie_network.git
+repository: https://github.com/mehmetakdumn604/cache_lottie_network
+homepage: https://github.com/mehmetakdumn604/cache_lottie_network
 
 environment:
   sdk: '>=3.3.4 <4.0.0'
@@ -14,7 +15,6 @@ dependencies:
     sdk: flutter
   flutter_secure_storage: ^9.2.4
   lottie: ^3.1.3
-  skeletons: ^0.0.3
 
 dev_dependencies:
   flutter_test:
