@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cached_lottie_network/cache_lottie_network.dart';
+import 'package:cached_lottie_network/cached_lottie_network.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
